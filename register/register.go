@@ -3,6 +3,7 @@ package register
 
 import (
 	"errors"
+	"log"
 	"net/http"
 
 	"golang.org/x/crypto/bcrypt"
@@ -93,6 +94,7 @@ func (reg *Register) registerPostHandler(ctx *authboss.Context, w http.ResponseW
 	if user, err := ctx.Storer.Get(key); err != nil && err != authboss.ErrUserNotFound {
 		return err
 	} else if user != nil {
+		log.Println("registerPostHandler Get", err)
 		validationErrs = append(validationErrs, authboss.FieldError{Name: reg.PrimaryID, Err: errors.New("Already in use")})
 	}
 
@@ -125,6 +127,7 @@ func (reg *Register) registerPostHandler(ctx *authboss.Context, w http.ResponseW
 	ctx.User = attr
 
 	if err := ctx.Storer.(RegisterStorer).Create(key, attr); err == authboss.ErrUserFound {
+		log.Println("registerPostHandler Create", err)
 		data := authboss.HTMLData{
 			"primaryID":      reg.PrimaryID,
 			"primaryIDValue": key,
