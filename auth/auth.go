@@ -4,6 +4,7 @@ package auth
 import (
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 
 	"golang.org/x/crypto/bcrypt"
@@ -134,6 +135,7 @@ func (a *Auth) loginHandlerFunc(ctx *authboss.Context, w http.ResponseWriter, r 
 }
 
 func validateCredentials(ctx *authboss.Context, key, password string) (bool, error) {
+	log.Println("FIXME validateCredentials 1")
 	if err := ctx.LoadUser(key); err == authboss.ErrUserNotFound {
 		return false, nil
 	} else if err != nil {
@@ -148,7 +150,7 @@ func validateCredentials(ctx *authboss.Context, key, password string) (bool, err
 	if err := bcrypt.CompareHashAndPassword([]byte(actualPassword), []byte(password)); err != nil {
 		return false, nil
 	}
-
+	log.Println("FIXME validateCredentials 100")
 	return true, nil
 }
 
