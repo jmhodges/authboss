@@ -7,6 +7,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"path"
@@ -109,6 +110,7 @@ func (c *Confirm) beforeGet(ctx *authboss.Context) (authboss.Interrupt, error) {
 
 // AfterRegister ensures the account is not activated.
 func (c *Confirm) afterRegister(ctx *authboss.Context) error {
+	log.Println("FIXME afterRegister 1")
 	if ctx.User == nil {
 		return errUserMissing
 	}
@@ -124,12 +126,14 @@ func (c *Confirm) afterRegister(ctx *authboss.Context) error {
 	if err := ctx.SaveUser(); err != nil {
 		return err
 	}
+	log.Println("FIXME afterRegister 75 mailer:", ctx.Mailer, "email:", email)
 
 	email, err := ctx.User.StringErr(authboss.StoreEmail)
 	if err != nil {
 		return err
 	}
 
+	log.Println("FIXME afterRegister 99 mailer:", ctx.Mailer, "email:", email)
 	goConfirmEmail(c, ctx, email, base64.URLEncoding.EncodeToString(token))
 
 	return nil
@@ -154,6 +158,7 @@ func (c *Confirm) confirmEmail(ctx *authboss.Context, to, token string) {
 		Subject: c.EmailSubjectPrefix + "Confirm New Account",
 	}
 
+	log.Println("FIXME confirmEmail 20 mailer:", ctx.Mailer, "email:", email)
 	err := response.Email(ctx.Mailer, email, c.emailHTMLTemplates, tplConfirmHTML, c.emailTextTemplates, tplConfirmText, url)
 	if err != nil {
 		fmt.Fprintf(ctx.LogWriter, "confirm: Failed to send e-mail: %v", err)

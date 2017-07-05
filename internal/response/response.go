@@ -9,6 +9,7 @@ import (
 	"html/template"
 	"io"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"path"
@@ -133,6 +134,7 @@ func Email(mailer authboss.Mailer, email authboss.Email, htmlTpls Templates, nam
 	}
 	email.TextBody = plainBuffer.String()
 
+	log.Println("FIXME Email 99 mailer:", mailer, "email:", email)
 	if err := mailer.Send(email); err != nil {
 		return err
 	}
