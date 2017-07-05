@@ -126,7 +126,7 @@ func (c *Confirm) afterRegister(ctx *authboss.Context) error {
 	if err := ctx.SaveUser(); err != nil {
 		return err
 	}
-	log.Println("FIXME afterRegister 75 mailer:", ctx.Mailer, "email:", email)
+	log.Println("FIXME afterRegister 75 mailer:", ctx.Mailer)
 
 	email, err := ctx.User.StringErr(authboss.StoreEmail)
 	if err != nil {
