@@ -166,7 +166,7 @@ func (c *Confirm) confirmEmail(ctx *authboss.Context, to, token string) {
 }
 
 func (c *Confirm) confirmHandler(ctx *authboss.Context, w http.ResponseWriter, r *http.Request) error {
-	log.Println("FIXME confirmHandler 1", user)
+	log.Println("FIXME confirmHandler 1")
 	token := r.FormValue(FormValueConfirm)
 	if len(token) == 0 {
 		return authboss.ClientDataErr{Name: FormValueConfirm}
