@@ -166,6 +166,7 @@ func (c *Confirm) confirmEmail(ctx *authboss.Context, to, token string) {
 }
 
 func (c *Confirm) confirmHandler(ctx *authboss.Context, w http.ResponseWriter, r *http.Request) error {
+	log.Println("FIXME confirmHandler 1", user)
 	token := r.FormValue(FormValueConfirm)
 	if len(token) == 0 {
 		return authboss.ClientDataErr{Name: FormValueConfirm}
@@ -188,6 +189,7 @@ func (c *Confirm) confirmHandler(ctx *authboss.Context, w http.ResponseWriter, r
 		return err
 	}
 
+	log.Println("FIXME confirmHandler 50", user)
 	ctx.User = authboss.Unbind(user)
 
 	ctx.User[StoreConfirmToken] = ""
@@ -201,9 +203,10 @@ func (c *Confirm) confirmHandler(ctx *authboss.Context, w http.ResponseWriter, r
 		if err != nil {
 			return err
 		}
+		log.Println("FIXME confirmHandler 100")
 		ctx.SessionStorer.Put(authboss.SessionKey, key)
 	}
 	response.Redirect(ctx, w, r, c.RegisterOKPath, "You have successfully confirmed your account.", "", true)
-
+	log.Println("FIXME confirmHandler 1xx")
 	return nil
 }
